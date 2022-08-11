@@ -60,18 +60,37 @@ fi
 
 if [ $COUNTER == 0 ]
 then
-    RESULT="ALL COMPLIANCE TESTS PASSED"
+        echo "$(date +%d/%m/%Y" "%R) - SSH COMPLIANCE CHECK" >> ~/Desktop/Assignment_1/assignment1.log
+        echo "ALL COMPLIANCE TESTS PASSED" >> ~/Desktop/Assignment_1/assignment1.log
+        echo "1.[$CHECK_1] - Ensure SSH root login is disabled" >> ~/Desktop/Assignment_1/assignment1.log
+        echo "2.[$CHECK_2] - Ensure SSH PermitEmptyPasswords is disabled" >> ~/Desktop/Assignment_1/assignment1.log
+        echo "3.[$CHECK_3] - Ensure SSH Protocol is set to 2" >> ~/Desktop/Assignment_1/assignment1.log
+        echo "4.[$CHECK_4] - Ensure Password Expiry is 90 or less days" >> ~/Desktop/Assignment_1/assignment1.log
+        echo "5.[$CHECK_5] - Ensure system accounts are non-login" >> ~/Desktop/Assignment_1/assignment1.log
 else
-    RESULT="$COUNTER/5 SSH COMPLIANCE CHECK FAILED"
+        echo "$(date +%d/%m/%Y" "%R) - SSH COMPLIANCE CHECK" >> ~/Desktop/Assignment_1/error.log
+        echo "===[ $COUNTER/5 FAILED ]===" >> ~/Desktop/Assignment_1/error.log
+        echo "1.[$CHECK_1] - Ensure SSH root login is disabled" >> ~/Desktop/Assignment_1/error.log
+        echo "2.[$CHECK_2] - Ensure SSH PermitEmptyPasswords is disabled" >> ~/Desktop/Assignment_1/error.log
+        echo "3.[$CHECK_3] - Ensure SSH Protocol is set to 2" >> ~/Desktop/Assignment_1/error.log
+        echo "4.[$CHECK_4] - Ensure Password Expiry is 90 or less days" >> ~/Desktop/Assignment_1/error.log
+        echo "5.[$CHECK_5] - Ensure system accounts are non-login" >> ~/Desktop/Assignment_1/error.log
 fi
 
-echo "$(date +%d/%m/%Y" "%R)"
-echo "===[ $RESULT ]==="
-echo "1.[$CHECK_1] - Ensure SSH root login is disabled"
-echo "2.[$CHECK_2] - Ensure SSH PermitEmptyPasswords is disabled"
-echo "3.[$CHECK_3] - Ensure SSH Protocol is set to 2"
-echo "4.[$CHECK_4] - Ensure Password Expiry is 90 or less days"
-echo "5.[$CHECK_5] - Ensure system accounts are non-login"
+#if [ $COUNTER == 0 ]
+#then
+#    RESULT="ALL COMPLIANCE TESTS PASSED"
+#else
+#    RESULT="$COUNTER/5 SSH COMPLIANCE CHECK FAILED"
+#fi
+
+#echo "$(date +%d/%m/%Y" "%R)"
+#echo "===[ $RESULT ]==="
+#echo "1.[$CHECK_1] - Ensure SSH root login is disabled"
+#echo "2.[$CHECK_2] - Ensure SSH PermitEmptyPasswords is disabled"
+#echo "3.[$CHECK_3] - Ensure SSH Protocol is set to 2"
+#echo "4.[$CHECK_4] - Ensure Password Expiry is 90 or less days"
+#echo "5.[$CHECK_5] - Ensure system accounts are non-login"
 
 #* 8,17 * * * ~/Desktop/Assignment_1/script.sh >> ~/Desktop/Assignment_1/assignment1.log
 
