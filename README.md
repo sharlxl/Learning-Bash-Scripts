@@ -1,7 +1,7 @@
 # STDA_Assignment1
 
 ## Tech 
-Bash script
+Bash shell script
 
 ## Requirements
 Develop a Linux bash script to implement the checking of the following CIS requirements based on the Linux VM image that you have been provided. The focus of this assignment shall be on Section 5 - Access, Authentication and Authorization .(https://www.cisecurity.org/controls/account-management/)
