@@ -3,22 +3,24 @@
 COUNTER=0
 
 #1 Ensure SSH root login is disabled
-grep -i "^\s*PermitRootLogin\s*no\s*$" /etc/ssh/sshd_config
+grep -i "^\s*PermitRootLogin\s*no\s*(#|$)" /etc/ssh/sshd_config
 
 if [ $? -ne 0 ]
 then
 	CHECK_1="FAILED"
+	echo "1.[$CHECK_1] - Ensure SSH root login is disabled" >> ~/Desktop/Assignment_1/error.log
 	((COUNTER++))
 else
 	CHECK_1="PASS"
 fi
 
 #2 Ensure SSH empty password disabled.
-grep -i "^\s*PermitEmptyPasswords\s*no\s*$" /etc/ssh/sshd_config
+grep -i "^\s*PermitEmptyPasswords\s*no\s*(#|$)" /etc/ssh/sshd_config
 
 if [ $? -ne 0 ]
 then
         CHECK_2="FAILED"
+	echo "2.[$CHECK_2] - Ensure SSH PermitEmptyPasswords is disabled" >> ~/Desktop/Assignment_1/error.log
         ((COUNTER++))
 else
         CHECK_2="PASS"
@@ -26,22 +28,24 @@ fi
 
 #3 Ensure SSH protocol set to 2.
 #PROTOCOL=$(ssh -Q protocol-version localhost)
-grep -i "^\s*Protocol\s*2\s*$" /etc/ssh/sshd_config
+grep -i "^\s*Protocol\s*2\s*(#|$)" /etc/ssh/sshd_config
 
 if [ $? -ne 0 ]
 then
         CHECK_3="FAILED"
+	echo "3.[$CHECK_3] - Ensure SSH Protocol is set to 2" >> ~/Desktop/Assignment_1/error.log
         ((COUNTER++))
 else
         CHECK_3="PASS"
 fi
 
 #4 Ensure password expiration is 90 days or less.
-grep -iE "^\s*PASS_MAX_DAYS\s*(?:\d|[0-8][0-9]|90)\s*$" /etc/login.defs
+grep -iE "^\s*PASS_MAX_DAYS\s*(?:\d|[0-8][0-9]|90)\s*(#|$)" /etc/login.defs
 
 if [ $? -ne 0 ]
 then
 	CHECK_4="FAILED"
+        echo "4.[$CHECK_4] - Ensure Password Expiry is 90 or less days" >> ~/Desktop/Assignment_1/error.log
 	((COUNTER++))
 else
 	CHECK_4="PASS"
@@ -55,27 +59,27 @@ then
     	CHECK_5="PASS"
 else
     	CHECK_5="FAILED"
+        echo "5.[$CHECK_5] - Ensure system accounts are non-login" >> ~/Desktop/Assignment_1/error.log
 	((COUNTER++))
 fi
 
 if [ $COUNTER == 0 ]
 then
-        echo "$(date +%d/%m/%Y" "%R) - SSH COMPLIANCE CHECK" >> ~/Desktop/Assignment_1/assignment1.log
-        echo "ALL COMPLIANCE TESTS PASSED" >> ~/Desktop/Assignment_1/assignment1.log
-        echo "1.[$CHECK_1] - Ensure SSH root login is disabled" >> ~/Desktop/Assignment_1/assignment1.log
-        echo "2.[$CHECK_2] - Ensure SSH PermitEmptyPasswords is disabled" >> ~/Desktop/Assignment_1/assignment1.log
-        echo "3.[$CHECK_3] - Ensure SSH Protocol is set to 2" >> ~/Desktop/Assignment_1/assignment1.log
-        echo "4.[$CHECK_4] - Ensure Password Expiry is 90 or less days" >> ~/Desktop/Assignment_1/assignment1.log
-        echo "5.[$CHECK_5] - Ensure system accounts are non-login" >> ~/Desktop/Assignment_1/assignment1.log
+	RESULT="ALL COMPLIANCE TESTS PASSED"
 else
-        echo "$(date +%d/%m/%Y" "%R) - SSH COMPLIANCE CHECK" >> ~/Desktop/Assignment_1/error.log
-        echo "===[ $COUNTER/5 FAILED ]===" >> ~/Desktop/Assignment_1/error.log
-        echo "1.[$CHECK_1] - Ensure SSH root login is disabled" >> ~/Desktop/Assignment_1/error.log
-        echo "2.[$CHECK_2] - Ensure SSH PermitEmptyPasswords is disabled" >> ~/Desktop/Assignment_1/error.log
-        echo "3.[$CHECK_3] - Ensure SSH Protocol is set to 2" >> ~/Desktop/Assignment_1/error.log
-        echo "4.[$CHECK_4] - Ensure Password Expiry is 90 or less days" >> ~/Desktop/Assignment_1/error.log
-        echo "5.[$CHECK_5] - Ensure system accounts are non-login" >> ~/Desktop/Assignment_1/error.log
+        RESULT="$COUNTER/5 SSH COMPLIANCE CHECK FAILED"
+	echo "($(date +%d/%m/%Y" "%R) - $RESULT)" >> ~/Desktop/Assignment_1/error.log
+        echo " " >> ~/Desktop/Assignment_1/error.log
 fi
+
+echo "$(date +%d/%m/%Y" "%R) - SSH COMPLIANCE CHECK" >> ~/Desktop/Assignment_1/assignment1.log
+echo "$RESULT"
+echo "1.[$CHECK_1] - Ensure SSH root login is disabled" >> ~/Desktop/Assignment_1/assignment1.log
+echo "2.[$CHECK_2] - Ensure SSH PermitEmptyPasswords is disabled" >> ~/Desktop/Assignment_1/assignment1.log
+echo "3.[$CHECK_3] - Ensure SSH Protocol is set to 2" >> ~/Desktop/Assignment_1/assignment1.log
+echo "4.[$CHECK_4] - Ensure Password Expiry is 90 or less days" >> ~/Desktop/Assignment_1/assignment1.log
+echo "5.[$CHECK_5] - Ensure system accounts are non-login" >> ~/Desktop/Assignment_1/assignment1.log
+echo " " >> ~/Desktop/Assignment_1/assignment1.log
 
 #if [ $COUNTER == 0 ]
 #then
