@@ -16,7 +16,7 @@ echo "$TITLE" > ~/Desktop/Assignment_1/error.log
 
 #1 Ensure SSH root login is disabled
 
-grep -i "^\s*PermitRootLogin\s*no\s*(#|$)" /etc/ssh/sshd_config
+grep -i "^\s*PermitRootLogin\s*no\s*$" /etc/ssh/sshd_config
 
 
 
@@ -44,7 +44,7 @@ echo "$CHECK_1" >> ~/Desktop/Assignment_1/assignment1.log
 
 #2 Ensure SSH empty password disabled.
 
-grep -i "^\s*PermitEmptyPasswords\s*no\s*(#|$)" /etc/ssh/sshd_config
+grep -i "^\s*PermitEmptyPasswords\s*no\s*$" /etc/ssh/sshd_config
 
 
 
@@ -74,7 +74,7 @@ echo "$CHECK_2" >> ~/Desktop/Assignment_1/assignment1.log
 
 #PROTOCOL=$(ssh -Q protocol-version localhost)
 
-grep -i "^\s*Protocol\s*2\s*(#|$)" /etc/ssh/sshd_config
+grep -i "^\s*Protocol\s*2\s*$" /etc/ssh/sshd_config
 
 
 
@@ -102,7 +102,7 @@ echo "$CHECK_3" >> ~/Desktop/Assignment_1/assignment1.log
 
 #4 Ensure password expiration is 90 days or less.
 
-grep -iE "^\s*PASS_MAX_DAYS\s*(?:\d|[0-8][0-9]|90)\s*(#|$)" /etc/login.defs
+grep -iE "^\s*PASS_MAX_DAYS\s*([0-9]|[0-8][0-9]|90)\s*$" /etc/login.defs
 
 
 
