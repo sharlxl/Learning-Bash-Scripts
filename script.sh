@@ -81,6 +81,15 @@ echo "4.[$CHECK_4] - Ensure Password Expiry is 90 or less days" >> ~/Desktop/Ass
 echo "5.[$CHECK_5] - Ensure system accounts are non-login" >> ~/Desktop/Assignment_1/assignment1.log
 echo " " >> ~/Desktop/Assignment_1/assignment1.log
 
+sendmail slxltester@gmail.com < echo "Subject: $RESULT" | cat ~/Desktop/Assignment_1/a>
+
+
+
+
+
+
+
+
 #if [ $COUNTER == 0 ]
 #then
 #    RESULT="ALL COMPLIANCE TESTS PASSED"
