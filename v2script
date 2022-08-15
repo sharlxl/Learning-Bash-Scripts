@@ -8,15 +8,23 @@ COUNTER=0
 
 
 
+# used the append function, to keep a backlog of all the past compliance checks
+
 echo "$TITLE" >> ~/Desktop/Assignment_1/assignment1.log
+
+
+
+# This is to over write the existing error log for a fresh file.
 
 echo "$TITLE" > ~/Desktop/Assignment_1/error.log
 
 
 
-#1 Ensure SSH root login is disabled
+## 1
 
-grep -i "^\s*PermitRootLogin\s*no\s*$" /etc/ssh/sshd_config
+# Ensure SSH root login is disabled
+
+grep -i "^\s*PermitRootLogin\s*no\s*(#|$)" /etc/ssh/sshd_config
 
 
 
@@ -24,15 +32,15 @@ if [ $? -ne 0 ]
 
 then
 
-	      CHECK_1="1.[FAILED] - Ensure SSH root login is disabled"
+	CHECK_1="1.[FAILED] - Ensure SSH root login is disabled"
 
-	      echo "$CHECK_1" >> ~/Desktop/Assignment_1/error.log
+	echo "$CHECK_1" >> ~/Desktop/Assignment_1/error.log
 
-	      ((COUNTER++))
+	((COUNTER++))
 
 else
 
-	      CHECK_1="1.[PASS] - Ensure SSH root login is disabled"
+	CHECK_1="1.[PASS] - Ensure SSH root login is disabled"
 
 fi
 
@@ -42,9 +50,11 @@ echo "$CHECK_1" >> ~/Desktop/Assignment_1/assignment1.log
 
 
 
-#2 Ensure SSH empty password disabled.
+## 2
 
-grep -i "^\s*PermitEmptyPasswords\s*no\s*$" /etc/ssh/sshd_config
+# Ensure SSH empty password disabled.
+
+grep -i "^\s*PermitEmptyPasswords\s*no\s*(#|$)" /etc/ssh/sshd_config
 
 
 
@@ -54,7 +64,7 @@ then
 
         CHECK_2="2.[FAILED] - Ensure SSH PermitEmptyPasswords is disabled"
 
-	      echo "$CHECK_2" >> ~/Desktop/Assignment_1/error.log
+	echo "$CHECK_2" >> ~/Desktop/Assignment_1/error.log
 
         ((COUNTER++))
 
@@ -70,11 +80,13 @@ echo "$CHECK_2" >> ~/Desktop/Assignment_1/assignment1.log
 
 
 
-#3 Ensure SSH protocol set to 2.
+## 3
+
+# Ensure SSH protocol set to 2.
 
 #PROTOCOL=$(ssh -Q protocol-version localhost)
 
-grep -i "^\s*Protocol\s*2\s*$" /etc/ssh/sshd_config
+grep -i "^\s*Protocol\s*2\s*(#|$)" /etc/ssh/sshd_config
 
 
 
@@ -84,7 +96,7 @@ then
 
         CHECK_3="3.[FAILED] - Ensure SSH Protocol is set to 2"
 
-	      echo "$CHECK_3" >> ~/Desktop/Assignment_1/error.log
+	echo "$CHECK_3" >> ~/Desktop/Assignment_1/error.log
 
         ((COUNTER++))
 
@@ -100,9 +112,11 @@ echo "$CHECK_3" >> ~/Desktop/Assignment_1/assignment1.log
 
 
 
-#4 Ensure password expiration is 90 days or less.
+## 4
 
-grep -iE "^\s*PASS_MAX_DAYS\s*([0-9]|[0-8][0-9]|90)\s*$" /etc/login.defs
+# Ensure password expiration is 90 days or less.
+
+grep -iE "^\s*PASS_MAX_DAYS\s*(?:\d|[0-8][0-9]|90)\s*(#|$)" /etc/login.defs
 
 
 
@@ -110,15 +124,15 @@ if [ $? -ne 0 ]
 
 then
 
-	      CHECK_4="4.[FAILED] - Ensure Password Expiry is 90 or less days"
+	CHECK_4="4.[FAILED] - Ensure Password Expiry is 90 or less days"
 
         echo "$CHECK_4" >> ~/Desktop/Assignment_1/error.log
 
-	      ((COUNTER++))
+	((COUNTER++))
 
 else
 
-	      CHECK_4="4.[PASS] - Ensure Password Expiry is 90 or less days"
+	CHECK_4="4.[PASS] - Ensure Password Expiry is 90 or less days"
 
 fi
 
@@ -128,7 +142,9 @@ echo "$CHECK_4" >> ~/Desktop/Assignment_1/assignment1.log
 
 
 
-#5 Ensure system accounts are non login.
+## 5 
+
+# Ensure system accounts are non login.
 
 LOGIN=$(egrep -v "^\+" /etc/passwd | awk -F: '($1!="root" && $1!="sync" && $1!="shutdown" && $1!="halt" && $3<1000 && $7!="/usr/sbin/nologin" && $7!="/bin/false") {print}')
 
@@ -138,15 +154,15 @@ if [ "$LOGIN" == "" ]
 
 then
 
-    	  CHECK_5="5.[PASS] - Ensure system accounts are non-login"
+	CHECK_5="5.[PASS] - Ensure system accounts are non-login"
 
 else
 
-    	  CHECK_5="5.[FAILED] - Ensure system accounts are non-login"
+	CHECK_5="5.[FAILED] - Ensure system accounts are non-login"
 
         echo "$CHECK_5" >> ~/Desktop/Assignment_1/error.log
 
-	      ((COUNTER++))
+	((COUNTER++))
 
 fi
 
@@ -160,13 +176,17 @@ if [ $COUNTER == 0 ]
 
 then
 
-	      RESULT="ALL COMPLIANCE TESTS PASSED"
+	RESULT="$COUNTER/5 Non-Compliance"
+
+	mail -s "$RESULT - $TITLE" slxltester@gmail.com <<< "All Compliance test pass."
 
 else
 
-        RESULT="$COUNTER/5 FAILED"
+	RESULT="$COUNTER/5 Non-Compliance"
 
-	      echo "($RESULT)" >> ~/Desktop/Assignment_1/error.log
+	echo "($RESULT)" >> ~/Desktop/Assignment_1/error.log
+
+	mail -s "$RESULT - $TITLE" slxltester@gmail.com < ~/Desktop/Assignment_1/error.log
 
 fi
 
@@ -178,4 +198,4 @@ echo " " >> ~/Desktop/Assignment_1/assignment1.log
 
 
 
-mail -s "$RESULT - $TITLE" slxltester@gmail.com < ~/Desktop/Assignment_1/error.log
+cat ~/Desktop/Assignment_1/assignment1.log | tail -8 | head -7
