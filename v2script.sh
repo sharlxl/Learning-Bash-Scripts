@@ -12,7 +12,7 @@
 
 
 
-LOGS_DIRECTORY=~/Desktop/Assignment_1
+LOGS_DIRECTORY=/home/shar/Desktop/Assignment_1
 
 TITLE="SSH COMPLIANCE CHECK - $(date +%d/%m/%Y" "%R)"
 
@@ -38,7 +38,7 @@ echo "$TITLE" > $LOGS_DIRECTORY/error.log
 
 
 
-grep -i "^\s*PermitRootLogin\s*no\s*(#|$)" /etc/ssh/sshd_config
+grep -i "^\s*PermitRootLogin\s+no\s*$" /etc/ssh/sshd_config
 
 # this regex is checking for an exact match of "PermitRootLogin no" 
 
@@ -48,9 +48,9 @@ grep -i "^\s*PermitRootLogin\s*no\s*(#|$)" /etc/ssh/sshd_config
 
 if [ $? -eq 0 ]
 
-#exit status 1 means it did not find any string that match = non compliance.
+# exit status 1 means it did not find any string that match = non compliance.
 
-#exit status 0 means it passed the compliance test.
+# exit status 0 means it passed the compliance test.
 
 then
 
@@ -72,7 +72,7 @@ fi
 
 echo "$CHECK_1" >> $LOGS_DIRECTORY/compliance_summary.log
 
-#This is outside of the if else statement for the summary of the test( logs the results regardless pass or fail. )
+# This is outside of the if else statement for the summary of the test( logs the results regardless pass or fail. )
 
 
 
@@ -82,7 +82,7 @@ echo "$CHECK_1" >> $LOGS_DIRECTORY/compliance_summary.log
 
 
 
-grep -i "^\s*PermitEmptyPasswords\s*no\s*(#|$)" /etc/ssh/sshd_config
+grep -i "^\s*PermitEmptyPasswords\s+no\s*$" /etc/ssh/sshd_config
 
 # similar to #1 other than white spaces before/inbetween/after, anything that doesnt match this will be detected as error, resulting in allowing logins to accounts with empty passwords in the system, which is equivalent to a non compliance result.
 
@@ -116,7 +116,7 @@ echo "$CHECK_2" >> $LOGS_DIRECTORY/compliance_summary.log
 
 
 
-grep -i "^\s*Protocol\s*2\s*(#|$)" /etc/ssh/sshd_config
+grep -i "^\s*Protocol\s+2\s*$" /etc/ssh/sshd_config
 
 # similar to the checks above, the regex search factors in the white spaces before/inbetween/after.
 
@@ -150,7 +150,7 @@ echo "$CHECK_3" >> $LOGS_DIRECTORY/compliance_summary.log
 
 
 
-grep -iE "^\s*PASS_MAX_DAYS\s*(?:\d|[0-8][0-9]|90)\s*(#|$)" /etc/login.defs
+grep -iE "^\s*PASS_MAX_DAYS\s+(?:[0-9]|[1-8][0-9]|90)\s*$" /etc/login.defs
 
 # This regex condition checks for the exact string of 'pass_max_days' and a digit between 0-90. 
 
