@@ -150,7 +150,7 @@ echo "$CHECK_3" >> $LOGS_DIRECTORY/compliance_summary.log
 
 
 
-grep -iE "^\s*PASS_MAX_DAYS\s+(?:[0-9]|[1-8][0-9]|90)\s*$" /etc/login.defs
+DAYS=$(grep -iE "^\s*PASS_MAX_DAYS\s+([0-9]|[1-8][0-9]|90)\s*$" /etc/login.defs | awk {print $2})
 
 # This regex condition checks for the exact string of 'pass_max_days' and a digit between 0-90. 
 
@@ -162,7 +162,7 @@ grep -iE "^\s*PASS_MAX_DAYS\s+(?:[0-9]|[1-8][0-9]|90)\s*$" /etc/login.defs
 
 
 
-if [ $? -eq 0 ]
+if [ $DAYS -le 90 ]
 
 then
 
