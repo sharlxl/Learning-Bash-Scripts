@@ -1,4 +1,4 @@
-# STDA_Assignment1
+# Assignment1
 
 ## Tech 
 Bash shell script
