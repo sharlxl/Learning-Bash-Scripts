@@ -149,8 +149,9 @@ echo "$CHECK_3" >> $LOGS_DIRECTORY/compliance_summary.log
 # Ensure password expiration is 90 days or less.
 
 
+DAYS=$(grep -iE "^\s*PASS_MAX_DAYS\s+([0-9]+)\s*$" /etc/login.defs | awk '{print $2}')
 
-DAYS=$(grep -iE "^\s*PASS_MAX_DAYS\s+([0-9]|[1-8][0-9]|90)\s*$" /etc/login.defs | awk {print $2})
+#DAYS=$(grep -iE "^\s*PASS_MAX_DAYS\s+([0-9]|[1-8][0-9]|90)\s*$" /etc/login.defs | awk {print $2})
 
 # This regex condition checks for the exact string of 'pass_max_days' and a digit between 0-90. 
 
@@ -162,7 +163,7 @@ DAYS=$(grep -iE "^\s*PASS_MAX_DAYS\s+([0-9]|[1-8][0-9]|90)\s*$" /etc/login.defs 
 
 
 
-if [ $DAYS -le 90 ]
+#if [ $DAYS -le 90 ]
 
 then
 
