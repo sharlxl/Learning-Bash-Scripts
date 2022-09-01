@@ -12,7 +12,7 @@
 
 
 
-LOGS_DIRECTORY=/home/shar/Desktop/Assignment_1
+LOGS_DIRECTORY=/tmp/SSH_Compliance_Check
 
 TITLE="SSH COMPLIANCE CHECK - $(date +%d/%m/%Y" "%R)"
 
@@ -150,7 +150,7 @@ echo "$CHECK_3" >> $LOGS_DIRECTORY/compliance_summary.log
 
 
 DAYS=$(grep -iE "^\s*PASS_MAX_DAYS\s+([0-9]+)\s*$" /etc/login.defs | awk '{print $2}')
-
+#echo $DAYS
 #DAYS=$(grep -iE "^\s*PASS_MAX_DAYS\s+([0-9]|[1-8][0-9]|90)\s*$" /etc/login.defs | awk {print $2})
 
 # This regex condition checks for the exact string of 'pass_max_days' and a digit between 0-90. 
@@ -163,7 +163,7 @@ DAYS=$(grep -iE "^\s*PASS_MAX_DAYS\s+([0-9]+)\s*$" /etc/login.defs | awk '{print
 
 
 
-#if [ $DAYS -le 90 ]
+if [ $DAYS -le 90 ]
 
 then
 
